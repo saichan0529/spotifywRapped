@@ -1,0 +1,40 @@
+Package: spotifywRapped
+Title: Creates Beautiful Visualizations of Spotify Premium User Listening Data
+Version: 1.0.0
+Authors@R: c(
+    person("Alyssa", "Brock", email = "brockflocka@gmail.com", role = c("aut", "cre")),
+    person("Jared", "Hileman", email = "jared.hileman77@gmail.com", role = "aut"),
+    person("Lauren", "Rose", email = "a02357321@usu.edu", role = "aut"),
+    person("Saichand", "Thota", email = "s.thota@usu.edu", role = "aut"))
+Description: The spotifywRapped package gives Spotify premium users control 
+    over how and when they get to view their listening history. This package 
+    depends on users having a Spotify premium account and data pulled from the
+    Spotify API (perhaps using the spotifyr package). The spotifywRapped
+    package lets the user specify a particular theme, or 'vibe', for their
+    graphic of choice. A user has the option to choose between several types of
+    graphics, like wordclouds visualizing their favorite artists, or an energy/
+    valence plot describing their listening habits. The user can then save
+    these graphics wherever they choose!
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    cowplot,
+    dplyr,
+    forcats,
+    ggplot2,
+    grid,
+    htmlwidgets,
+    magick,
+    spotifyr,
+    utils,
+    webshot,
+    wordcloud2
+Depends: 
+    R (>= 2.10)

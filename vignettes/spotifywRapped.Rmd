@@ -1,0 +1,211 @@
+---
+title: "spotifywRapped: Unwrapped"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{spotifywRapped: Unwrapped}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as pngs in Canva, and exported to R to add graphics and personalized text. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several kinds of built-in visualization options a user has at their disposal--let's take a look at how to use them.
+
+## Obtaining the Data
+
+In order to use spotifywRapped, the user must get their Spotify data using an API. To do this, the user must have Spotify Premium. Then, they can go to the "Spotify Developer Dashboard" and select "Create an app" in the dashboard. The user can fill in the rest of the information however they would like, but "Redirect URIs" needs to be filled in with "http://localhost:1410/." One the API is created, the user only needs to use the "client ID" and "client secret" to save their data into an rda rile. Simply replace these codes in the "DATASET.R" file and run it, and the data is ready to go.
+
+## Energy & Valence Plots
+
+The energy vs valence plot gives a visual summary of the general "vibe" a user tends towards in their favorite music. Using the user's saved tracks, the plot shows the distribution of songs across four quadrants, each representing a different mood.
+
+The function takes the user's listening data, vibe choice, filename, and save location as arguments. It outputs a .png file to the save location of the user's choice and returns the image's file path.
+
+Parameter options:
+
+- `data`: the user's saved track data
+
+- `vibe`: "soft", "neon", "neutral", or "bright"
+
+- `name`: the name of the output file
+
+- `saveto`: the directory to save the output file
+
+
+```{r enval}
+library(spotifywRapped)
+
+temp_save <- tempdir()
+energy_valence_demo <- my_energy_valence(
+  data = spotifywRapped::saved_tracks,
+  saveto = temp_save, vibe = "bright",
+  name = "enval_neon"
+)
+```
+
+Here is an example of the energy vs valence plot:
+
+![](`r energy_valence_demo`){width=450px height=800px}
+
+## Top Artists & Tracks Graphics
+
+Yet another fascinating visual implemented into the spotifywRapped package is the `my_top_five` function graphics library. This visualization shows the user's top five most frequently listened to artists and tracks over all time, the past 6 months, or the past 4 weeks. 
+
+Parameter options:
+
+- `time`: "long", "medium", or "short"
+
+- `category`: "artists" or "songs"
+
+- `vibe`: "soft", "neon", "neutral", or "bright"
+
+- `name`: the name of the output file
+
+- `saveto`: the directory to save the output file
+
+- `dataset`: the user's listening data
+
+
+The function will return the file path to the generated .png file.
+
+
+```{r top_artists}
+my_top_artists <- my_top_five(
+  time = "long", vibe = "neutral", category = "artists",
+  name = "My_Top_Artists_longterm",
+  saveto = temp_save
+)
+```
+Here is an example of the top artist graphic from long-term listening history:
+![](`r my_top_artists`){width=450px height=800px}
+
+Similarly, here is an example of the top tracks graphic from short-term listening:
+
+```{r top_tracks}
+my_top_tracks <- my_top_five(
+  time = "short", vibe = "neon", category = "songs",
+  name = "My_Top_Tracks_shortterm",
+  saveto = temp_save
+)
+```
+![](`r my_top_tracks`){width=450px height=800px}
+
+## Artist Frequency
+
+Next, we have the `artist_frequency` function, which generates a bar graph of the user's most frequently listened to artists from the user's saved tracks or top tracks of all time. The function takes the user's category, vibe, name choice, and save location as arguments. The function will return the file path to the generated .png file.
+
+Parameter options:
+
+- `category`: "top" or "saved"
+
+- `dataset`: the user's saved track data or top track data
+
+- `vibe`: "soft", "neon", "neutral", or "bright"
+
+- `name`: the name of the output file
+
+- `saveto`: the directory to which the output file is saved
+
+
+```{r artist_frequency_top}
+artist_frequency_top_demo <- my_artist_frequency(
+  category = "top", vibe = "soft",
+  name = "Top Tracks Artist Frequency",
+  saveto = temp_save
+)
+```
+
+
+Here is an example of the artist frequency graphic generated for the user's top tracks:
+
+![](`r artist_frequency_top_demo`){width=450px height=800px}
+
+```{r artist_frequency_saved}
+artist_frequency_saved_demo <- my_artist_frequency(
+  category = "saved", vibe = "neon",
+  name = "Saved Tracks Artist Frequency",
+  saveto = temp_save
+)
+```
+
+...and again for the user's saved tracks:
+
+![](`r artist_frequency_saved_demo`){width=450px height=800px}
+
+## Wordcloud - Frequently Listened Artists
+
+Finally, we have the `wordcloud` function, which generates a word cloud of the
+most frequently listened artists from the user's saved tracks. The function takes the user's saved tracks, vibe, file name, and save location as arguments.
+The function will return the file path to the generated .png file.
+
+Parameter options:
+
+- `category`: "long" or "saved"
+
+- `data`: the user's saved track data or long-term top tracks
+
+- `vibe`: "soft", "neon", "neutral", or "bright"
+
+- `name`: the name of the output file
+
+- `saveto`: the directory to save the output file
+
+```{r frequent_listened_artists}
+frequent_listened_artists_demo <- frequent_listened_artists(
+  category = "saved",
+  data = spotifywRapped::saved_tracks,
+  vibe = "neon",
+  name = "Frequently Listened Artists from saved tracks",
+  saveto = temp_save
+)
+``` 
+
+Here is an example of the most frequently listened artists graphic generated for the user's saved tracks:
+
+![](`r frequent_listened_artists_demo`){width=450px height=800px}
+
+
+## Datasets
+
+The spotifywRapped package comes equipped with several example datasets that users can use to test the package's functions. These datasets were pulled from one of the author's personal Spotify account. The datasets are as follows:
+
+- `saved_tracks`: a dataset containing the user's saved tracks from all time
+
+- `top_tracks_longterm`: a dataset containing the user's top tracks from all time
+
+- `top_tracks_mediumterm`: a dataset containing the user's top tracks from the past 6 months
+
+- `top_tracks_shortterm`: a dataset containing the user's top tracks from the past 4 weeks
+
+- `top_artists_longterm`: a dataset containing the user's top artists from all time
+
+- `top_artists_mediumterm`: a dataset containing the user's top artists from the past 6 months
+
+- `top_artists_shortterm`: a dataset containing the user's top artists from the past 4 weeks
+
+
+## Limitations
+
+- If users wish to use the `spotifywRapped` package for their own data, they 
+must have a Spotify account and a Spotify Developer account. The package 
+requires the user to have a Spotify API key to access their listening data. 
+The package also requires the user to have preprocessed their data in the same 
+way as done in the `DATASET.R` file.
+
+- Only 1000 observations were obtained for long-term top tracks and artists. 
+Limits might be extended for medium and short term listening histories as well.
+
+## Summary 
+
+The spotifywRapped package provides a way for the user to visualize their 
+listening history and patterns at any time (not just in December). Not only 
+that, but the package uses numerical data to back up this information. With 
+energy vs. valence plots, top artist and track breakdowns, artist frequency 
+plots, and frequented artist wordclouds, the possibilities are endless. With spotifywRapped, Spotify Wrapped Day can be every day.
